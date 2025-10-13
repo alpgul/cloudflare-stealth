@@ -1,0 +1,17 @@
+# Cloudflare Worker Configuration for cloudflare-stealth Simple Example
+# 
+# This configuration file defines the settings for deploying the simple
+# cloudflare-stealth example to Cloudflare Workers.
+#
+# For more information about Wrangler configuration, see:
+# https://developers.cloudflare.com/workers/wrangler/configuration/
+
+# Worker name - must be unique across your Cloudflare account
+name = "cloudflare-stealth-simple"
+
+# Entry point file for the Worker
+main = "index.js"
+
+# Compatibility date - determines which features and APIs are available
+# This should be set to a recent date to ensure access to latest features
+compatibility_date = "2025-10-04"

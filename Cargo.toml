@@ -1,0 +1,44 @@
+[package]
+name = "cloudflare-stealth"
+version = "0.1.0"
+edition = "2021"
+authors = ["alpgul <5773704+alpgul@users.noreply.github.com>"]
+description = "High-performance HTTP proxy implementation for Cloudflare Workers, built with Rust and WebAssembly"
+repository = "https://github.com/alpgul/cloudflare-stealth"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+getrandom = { version = "0.2", features = ["js"] }
+tokio = { version = "1.47.1", features = ["io-util", "macros"] }
+worker = { version = "0.6", features = ["http"] }
+worker-macros = { version = "0.6" }
+
+# WASM32-unknown-unknown compatible TLS packages (without certificate verification)
+ring = { version = "0.17.7", features = ["wasm32_unknown_unknown_js"] }
+tokio-rustls = { version = "0.26.0", default-features = false }
+rustls = { version = "0.23.18", default-features = false, features = ["ring"] }
+rustls-pki-types = { version = "1.10.0", features = ["web"] }
+
+# HTTP support
+http = { version = "1.0", default-features = false }
+
+# Hyper HTTP client
+hyper = { version = "1.7.0", default-features = false, features = ["client", "http1", "http2"] }
+hyper-util = { version = "0.1.17", default-features = false, features = ["tokio"] }
+http-body-util = "0.1"
+http-body = "1.0"
+
+# WASM futures support
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+futures = "0.3"
+
+# URL parsing
+url = "2.5"
+
+# Debugging and error handling
+console_error_panic_hook = "0.1"
+

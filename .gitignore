@@ -1,10 +1,6 @@
 target/
 node_modules/
 .wrangler/
-dist/
 build/*
-!build/index.js
-!build/index_bg.wasm
-!build/index.d.ts
 Cargo.lock
 package-lock.json

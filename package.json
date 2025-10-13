@@ -1,0 +1,34 @@
+{
+  "name": "cloudflare-stealth",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Cloudflare Workers proxy with HTTP/1.1 and HTTP/2 support",
+  "main": "dist/fetch2.js",
+  "types": "dist/fetch2.d.ts",
+  "files": [
+    "dist/**/*",
+    "build/**/*"
+  ],
+  "scripts": {
+    "build:rust": "cargo install -q worker-build && worker-build --release",
+     "build:dist": "node esbuild.config.js",
+    "build": "npm run build:rust && npm run build:dist",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "proxy",
+    "http",
+    "rust",
+    "typescript",
+    "wasm"
+  ],
+  "author": "alpgul",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "typescript": "^5.9.3",
+    "esbuild": "^0.19.0"
+  }
+}
