@@ -380,9 +380,6 @@ cloudflare-stealth automatically filters out potentially problematic headers:
 
 ## 📖 Documentation
 
-- [API Reference](docs/api.md)
-- [Security Best Practices](docs/security.md)
-- [Performance Guide](docs/performance.md)
 - [Examples](examples/)
 - [Changelog](CHANGELOG.md)
 
