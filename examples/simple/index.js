@@ -34,7 +34,10 @@ import { fetch2 } from "../../dist/fetch2.js";
 export default {
     async fetch(request, env, ctx) {
         // Test the fetch2 proxy functionality
-        const testResponse = await fetch2("https://example.com", {
+        if (new URL(request.url).pathname !== "/") {
+            return new Response("Not found", { status: 404 });
+        }
+        const testResponse = await fetch2("https://tools.scrapfly.io/api/fp/ja3", {
             method: "GET",
             headers: request.headers,
             body: request.body,
