@@ -2,766 +2,811 @@ var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
 // build/index.js
-import { WorkerEntrypoint as nt } from "cloudflare:workers";
-import L from "./index_bg.wasm";
-import { connect as D } from "cloudflare:sockets";
+import { WorkerEntrypoint as ae } from "cloudflare:workers";
+import H from "./index_bg.wasm";
+import { connect as G } from "cloudflare:sockets";
 var r;
 var g = 0;
 var S = null;
-function E() {
+function W() {
   return (S === null || S.byteLength === 0) && (S = new Uint8Array(r.memory.buffer)), S;
 }
-__name(E, "E");
-var W = new TextEncoder();
-"encodeInto" in W || (W.encodeInto = function(t, e) {
-  let n = W.encode(t);
-  return e.set(n), { read: t.length, written: n.length };
+__name(W, "W");
+var j = new TextEncoder();
+"encodeInto" in j || (j.encodeInto = function(e, t) {
+  let n = j.encode(e);
+  return t.set(n), { read: e.length, written: n.length };
 });
-function h(t, e, n) {
+function m(e, t, n) {
   if (n === void 0) {
-    let f = W.encode(t), R = e(f.length, 1) >>> 0;
-    return E().subarray(R, R + f.length).set(f), g = f.length, R;
+    let a = j.encode(e), d = t(a.length, 1) >>> 0;
+    return W().subarray(d, d + a.length).set(a), g = a.length, d;
   }
-  let i = t.length, _ = e(i, 1) >>> 0, a = E(), c = 0;
-  for (; c < i; c++) {
-    let f = t.charCodeAt(c);
-    if (f > 127)
+  let _ = e.length, o = t(_, 1) >>> 0, u = W(), c = 0;
+  for (; c < _; c++) {
+    let a = e.charCodeAt(c);
+    if (a > 127)
       break;
-    a[_ + c] = f;
+    u[o + c] = a;
   }
-  if (c !== i) {
-    c !== 0 && (t = t.slice(c)), _ = n(_, i, i = c + t.length * 3, 1) >>> 0;
-    let f = E().subarray(_ + c, _ + i), R = W.encodeInto(t, f);
-    c += R.written, _ = n(_, i, c, 1) >>> 0;
+  if (c !== _) {
+    c !== 0 && (e = e.slice(c)), o = n(o, _, _ = c + e.length * 3, 1) >>> 0;
+    let a = W().subarray(o + c, o + _), d = j.encodeInto(e, a);
+    c += d.written, o = n(o, _, c, 1) >>> 0;
   }
-  return g = c, _;
+  return g = c, o;
 }
-__name(h, "h");
-var l = null;
+__name(m, "m");
+var p = null;
 function b() {
-  return (l === null || l.buffer.detached === true || l.buffer.detached === void 0 && l.buffer !== r.memory.buffer) && (l = new DataView(r.memory.buffer)), l;
+  return (p === null || p.buffer.detached === true || p.buffer.detached === void 0 && p.buffer !== r.memory.buffer) && (p = new DataView(r.memory.buffer)), p;
 }
 __name(b, "b");
-function u(t) {
-  return t == null;
-}
-__name(u, "u");
-function w(t) {
-  let e = r.__externref_table_alloc();
-  return r.__wbindgen_export_3.set(e, t), e;
-}
-__name(w, "w");
-function s(t, e) {
-  try {
-    return t.apply(this, e);
-  } catch (n) {
-    let i = w(n);
-    r.__wbindgen_exn_store(i);
+function L(e) {
+  let t = typeof e;
+  if (t == "number" || t == "boolean" || e == null)
+    return `${e}`;
+  if (t == "string")
+    return `"${e}"`;
+  if (t == "symbol") {
+    let o = e.description;
+    return o == null ? "Symbol" : `Symbol(${o})`;
   }
-}
-__name(s, "s");
-var T = new TextDecoder("utf-8", { ignoreBOM: true, fatal: true });
-T.decode();
-function q(t, e) {
-  return T.decode(E().subarray(t, t + e));
-}
-__name(q, "q");
-function d(t, e) {
-  return t = t >>> 0, q(t, e);
-}
-__name(d, "d");
-function j(t, e) {
-  return t = t >>> 0, E().subarray(t / 1, t / 1 + e);
-}
-__name(j, "j");
-function k(t) {
-  let e = typeof t;
-  if (e == "number" || e == "boolean" || t == null)
-    return `${t}`;
-  if (e == "string")
-    return `"${t}"`;
-  if (e == "symbol") {
-    let _ = t.description;
-    return _ == null ? "Symbol" : `Symbol(${_})`;
+  if (t == "function") {
+    let o = e.name;
+    return typeof o == "string" && o.length > 0 ? `Function(${o})` : "Function";
   }
-  if (e == "function") {
-    let _ = t.name;
-    return typeof _ == "string" && _.length > 0 ? `Function(${_})` : "Function";
+  if (Array.isArray(e)) {
+    let o = e.length, u = "[";
+    o > 0 && (u += L(e[0]));
+    for (let c = 1; c < o; c++)
+      u += ", " + L(e[c]);
+    return u += "]", u;
   }
-  if (Array.isArray(t)) {
-    let _ = t.length, a = "[";
-    _ > 0 && (a += k(t[0]));
-    for (let c = 1; c < _; c++)
-      a += ", " + k(t[c]);
-    return a += "]", a;
-  }
-  let n = /\[object ([^\]]+)\]/.exec(toString.call(t)), i;
+  let n = /\[object ([^\]]+)\]/.exec(toString.call(e)), _;
   if (n && n.length > 1)
-    i = n[1];
+    _ = n[1];
   else
-    return toString.call(t);
-  if (i == "Object")
+    return toString.call(e);
+  if (_ == "Object")
     try {
-      return "Object(" + JSON.stringify(t) + ")";
+      return "Object(" + JSON.stringify(e) + ")";
     } catch {
       return "Object";
     }
-  return t instanceof Error ? `${t.name}: ${t.message}
-${t.stack}` : i;
+  return e instanceof Error ? `${e.name}: ${e.message}
+${e.stack}` : _;
 }
-__name(k, "k");
-var O = typeof FinalizationRegistry > "u" ? { register: () => {
-}, unregister: () => {
-} } : new FinalizationRegistry((t) => {
-  t.instance === o && r.__wbindgen_export_6.get(t.dtor)(t.a, t.b);
-});
-function H(t, e, n, i) {
-  let _ = { a: t, b: e, cnt: 1, dtor: n, instance: o }, a = /* @__PURE__ */ __name((...c) => {
-    if (_.instance !== o)
-      throw new Error("Cannot invoke closure from previous WASM instance");
-    _.cnt++;
-    let f = _.a;
-    _.a = 0;
-    try {
-      return i(f, _.b, ...c);
-    } finally {
-      --_.cnt === 0 ? (r.__wbindgen_export_6.get(_.dtor)(f, _.b), O.unregister(_)) : _.a = f;
-    }
-  }, "a");
-  return a.original = _, O.register(a, _, _), a;
+__name(L, "L");
+function f(e) {
+  return e == null;
 }
-__name(H, "H");
-function ot(t) {
-  return r.fetch2(t);
+__name(f, "f");
+var V = new TextDecoder("utf-8", { ignoreBOM: true, fatal: true });
+V.decode();
+function K(e, t) {
+  return V.decode(W().subarray(e, e + t));
 }
-__name(ot, "ot");
-function V(t, e) {
-  t = t >>> 0;
-  let n = b(), i = [];
-  for (let _ = t; _ < t + 4 * e; _ += 4)
-    i.push(r.__wbindgen_export_3.get(n.getUint32(_, true)));
-  return r.__externref_drop_slice(t, e), i;
+__name(K, "K");
+function l(e, t) {
+  return e = e >>> 0, K(e, t);
 }
-__name(V, "V");
-function B(t, e) {
-  let n = e(t.length * 4, 4) >>> 0;
-  for (let i = 0; i < t.length; i++) {
-    let _ = w(t[i]);
-    b().setUint32(n + 4 * i, _, true);
+__name(l, "l");
+function w(e) {
+  let t = r.__externref_table_alloc();
+  return r.__wbindgen_externrefs.set(t, e), t;
+}
+__name(w, "w");
+function s(e, t) {
+  try {
+    return e.apply(this, t);
+  } catch (n) {
+    let _ = w(n);
+    r.__wbindgen_exn_store(_);
   }
-  return g = t.length, n;
+}
+__name(s, "s");
+function P(e, t) {
+  return e = e >>> 0, W().subarray(e / 1, e / 1 + t);
+}
+__name(P, "P");
+var D = typeof FinalizationRegistry > "u" ? { register: () => {
+}, unregister: () => {
+} } : new FinalizationRegistry((e) => {
+  e.instance === i && e.dtor(e.a, e.b);
+});
+function Q(e, t, n, _) {
+  let o = { a: e, b: t, cnt: 1, dtor: n, instance: i }, u = /* @__PURE__ */ __name((...c) => {
+    if (o.instance !== i)
+      throw new Error("Cannot invoke closure from previous WASM instance");
+    o.cnt++;
+    let a = o.a;
+    o.a = 0;
+    try {
+      return _(a, o.b, ...c);
+    } finally {
+      o.a = a, u._wbg_cb_unref();
+    }
+  }, "u");
+  return u._wbg_cb_unref = () => {
+    --o.cnt === 0 && (o.dtor(o.a, o.b), o.a = 0, D.unregister(o));
+  }, D.register(u, o, o), u;
+}
+__name(Q, "Q");
+function B(e) {
+  return r.fetch2(e);
 }
 __name(B, "B");
-function z(t) {
-  r.setPanicHook(t);
+function U(e) {
+  r.setPanicHook(e);
 }
-__name(z, "z");
-function $(t, e, n) {
-  r.closure1220_externref_shim(t, e, n);
+__name(U, "U");
+function X(e, t) {
+  e = e >>> 0;
+  let n = b(), _ = [];
+  for (let o = e; o < e + 4 * t; o += 4)
+    _.push(r.__wbindgen_externrefs.get(n.getUint32(o, true)));
+  return r.__externref_drop_slice(e, t), _;
+}
+__name(X, "X");
+function Y(e, t) {
+  let n = t(e.length * 4, 4) >>> 0;
+  for (let _ = 0; _ < e.length; _++) {
+    let o = w(e[_]);
+    b().setUint32(n + 4 * _, o, true);
+  }
+  return g = e.length, n;
+}
+__name(Y, "Y");
+function Z(e, t, n) {
+  r.wasm_bindgen__convert__closures_____invoke__he87dc3d386a20d87(e, t, n);
+}
+__name(Z, "Z");
+function ee(e, t, n, _) {
+  r.wasm_bindgen__convert__closures_____invoke__hb7212ed9f4b56775(e, t, n, _);
+}
+__name(ee, "ee");
+var te = ["bytes"];
+var i = 0;
+function $() {
+  i++, p = null, S = null, typeof numBytesDecoded < "u" && (numBytesDecoded = 0), typeof g < "u" && (g = 0), r = new WebAssembly.Instance(H, N).exports, r.__wbindgen_start();
 }
 __name($, "$");
-function N(t, e, n, i) {
-  r.closure1252_externref_shim(t, e, n, i);
-}
-__name(N, "N");
-var J = ["bytes"];
-var o = 0;
-var K = typeof FinalizationRegistry > "u" ? { register: () => {
+var ne = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_containerstartupoptions_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_containerstartupoptions_free(e >>> 0, 1);
 });
 var _a;
-var y = (_a = class {
+var v = (_a = class {
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, K.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, ne.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_containerstartupoptions_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_containerstartupoptions_free(t, 0);
   }
   get entrypoint() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.__wbg_get_containerstartupoptions_entrypoint(this.__wbg_ptr);
-    var n = V(e[0], e[1]).slice();
-    return r.__wbindgen_free(e[0], e[1] * 4, 4), n;
+    let t = r.__wbg_get_containerstartupoptions_entrypoint(this.__wbg_ptr);
+    var n = X(t[0], t[1]).slice();
+    return r.__wbindgen_free(t[0], t[1] * 4, 4), n;
   }
-  set entrypoint(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set entrypoint(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let n = B(e, r.__wbindgen_malloc), i = g;
-    r.__wbg_set_containerstartupoptions_entrypoint(this.__wbg_ptr, n, i);
+    let n = Y(t, r.__wbindgen_malloc), _ = g;
+    r.__wbg_set_containerstartupoptions_entrypoint(this.__wbg_ptr, n, _);
   }
   get enableInternet() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.__wbg_get_containerstartupoptions_enableInternet(this.__wbg_ptr);
-    return e === 16777215 ? void 0 : e !== 0;
+    let t = r.__wbg_get_containerstartupoptions_enableInternet(this.__wbg_ptr);
+    return t === 16777215 ? void 0 : t !== 0;
   }
-  set enableInternet(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set enableInternet(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_containerstartupoptions_enableInternet(this.__wbg_ptr, u(e) ? 16777215 : e ? 1 : 0);
+    r.__wbg_set_containerstartupoptions_enableInternet(this.__wbg_ptr, f(t) ? 16777215 : t ? 1 : 0);
   }
   get env() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     return r.__wbg_get_containerstartupoptions_env(this.__wbg_ptr);
   }
-  set env(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set env(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_containerstartupoptions_env(this.__wbg_ptr, e);
+    r.__wbg_set_containerstartupoptions_env(this.__wbg_ptr, t);
   }
-}, __name(_a, "y"), _a);
-Symbol.dispose && (y.prototype[Symbol.dispose] = y.prototype.free);
-var Q = typeof FinalizationRegistry > "u" ? { register: () => {
+}, __name(_a, "v"), _a);
+Symbol.dispose && (v.prototype[Symbol.dispose] = v.prototype.free);
+var re = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_intounderlyingbytesource_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_intounderlyingbytesource_free(e >>> 0, 1);
 });
 var _a2;
-var m = (_a2 = class {
+var x = (_a2 = class {
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, Q.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, re.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_intounderlyingbytesource_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_intounderlyingbytesource_free(t, 0);
   }
   get type() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.intounderlyingbytesource_type(this.__wbg_ptr);
-    return J[e];
+    let t = r.intounderlyingbytesource_type(this.__wbg_ptr);
+    return te[t];
   }
   get autoAllocateChunkSize() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     return r.intounderlyingbytesource_autoAllocateChunkSize(this.__wbg_ptr) >>> 0;
   }
-  start(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  start(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.intounderlyingbytesource_start(this.__wbg_ptr, e);
+    r.intounderlyingbytesource_start(this.__wbg_ptr, t);
   }
-  pull(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  pull(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    return r.intounderlyingbytesource_pull(this.__wbg_ptr, e);
+    return r.intounderlyingbytesource_pull(this.__wbg_ptr, t);
   }
   cancel() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = this.__destroy_into_raw();
-    r.intounderlyingbytesource_cancel(e);
+    let t = this.__destroy_into_raw();
+    r.intounderlyingbytesource_cancel(t);
   }
-}, __name(_a2, "m"), _a2);
-Symbol.dispose && (m.prototype[Symbol.dispose] = m.prototype.free);
-var X = typeof FinalizationRegistry > "u" ? { register: () => {
+}, __name(_a2, "x"), _a2);
+Symbol.dispose && (x.prototype[Symbol.dispose] = x.prototype.free);
+var _e = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_intounderlyingsink_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_intounderlyingsink_free(e >>> 0, 1);
 });
 var _a3;
-var x = (_a3 = class {
+var I = (_a3 = class {
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, X.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, _e.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_intounderlyingsink_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_intounderlyingsink_free(t, 0);
   }
-  write(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  write(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    return r.intounderlyingsink_write(this.__wbg_ptr, e);
+    return r.intounderlyingsink_write(this.__wbg_ptr, t);
   }
   close() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = this.__destroy_into_raw();
-    return r.intounderlyingsink_close(e);
+    let t = this.__destroy_into_raw();
+    return r.intounderlyingsink_close(t);
   }
-  abort(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  abort(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     let n = this.__destroy_into_raw();
-    return r.intounderlyingsink_abort(n, e);
+    return r.intounderlyingsink_abort(n, t);
   }
-}, __name(_a3, "x"), _a3);
-Symbol.dispose && (x.prototype[Symbol.dispose] = x.prototype.free);
-var U = typeof FinalizationRegistry > "u" ? { register: () => {
+}, __name(_a3, "I"), _a3);
+Symbol.dispose && (I.prototype[Symbol.dispose] = I.prototype.free);
+var q = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_intounderlyingsource_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_intounderlyingsource_free(e >>> 0, 1);
 });
 var _a4;
-var p = (_a4 = class {
-  static __wrap(e) {
-    e = e >>> 0;
+var h = (_a4 = class {
+  static __wrap(t) {
+    t = t >>> 0;
     let n = Object.create(_a4.prototype);
-    return n.__wbg_ptr = e, n.__wbg_inst = o, U.register(n, { ptr: e, instance: o }, n), n;
+    return n.__wbg_ptr = t, n.__wbg_inst = i, q.register(n, { ptr: t, instance: i }, n), n;
   }
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, U.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, q.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_intounderlyingsource_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_intounderlyingsource_free(t, 0);
   }
-  pull(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  pull(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    return r.intounderlyingsource_pull(this.__wbg_ptr, e);
+    return r.intounderlyingsource_pull(this.__wbg_ptr, t);
   }
   cancel() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = this.__destroy_into_raw();
-    r.intounderlyingsource_cancel(e);
+    let t = this.__destroy_into_raw();
+    r.intounderlyingsource_cancel(t);
   }
-}, __name(_a4, "t"), _a4);
-Symbol.dispose && (p.prototype[Symbol.dispose] = p.prototype.free);
-var Y = typeof FinalizationRegistry > "u" ? { register: () => {
+}, __name(_a4, "e"), _a4);
+Symbol.dispose && (h.prototype[Symbol.dispose] = h.prototype.free);
+var oe = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_minifyconfig_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_minifyconfig_free(e >>> 0, 1);
 });
 var _a5;
-var v = (_a5 = class {
+var R = (_a5 = class {
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, Y.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, oe.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_minifyconfig_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_minifyconfig_free(t, 0);
   }
   get js() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     return r.__wbg_get_minifyconfig_js(this.__wbg_ptr) !== 0;
   }
-  set js(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set js(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_minifyconfig_js(this.__wbg_ptr, e);
+    r.__wbg_set_minifyconfig_js(this.__wbg_ptr, t);
   }
   get html() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     return r.__wbg_get_minifyconfig_html(this.__wbg_ptr) !== 0;
   }
-  set html(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set html(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_minifyconfig_html(this.__wbg_ptr, e);
+    r.__wbg_set_minifyconfig_html(this.__wbg_ptr, t);
   }
   get css() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
     return r.__wbg_get_minifyconfig_css(this.__wbg_ptr) !== 0;
   }
-  set css(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set css(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_minifyconfig_css(this.__wbg_ptr, e);
+    r.__wbg_set_minifyconfig_css(this.__wbg_ptr, t);
   }
-}, __name(_a5, "v"), _a5);
-Symbol.dispose && (v.prototype[Symbol.dispose] = v.prototype.free);
-var Z = typeof FinalizationRegistry > "u" ? { register: () => {
+}, __name(_a5, "R"), _a5);
+Symbol.dispose && (R.prototype[Symbol.dispose] = R.prototype.free);
+var ie = typeof FinalizationRegistry > "u" ? { register: () => {
 }, unregister: () => {
-} } : new FinalizationRegistry(({ ptr: t, instance: e }) => {
-  e === o && r.__wbg_r2range_free(t >>> 0, 1);
+} } : new FinalizationRegistry(({ ptr: e, instance: t }) => {
+  t === i && r.__wbg_r2range_free(e >>> 0, 1);
 });
 var _a6;
-var I = (_a6 = class {
+var E = (_a6 = class {
   __destroy_into_raw() {
-    let e = this.__wbg_ptr;
-    return this.__wbg_ptr = 0, Z.unregister(this), e;
+    let t = this.__wbg_ptr;
+    return this.__wbg_ptr = 0, ie.unregister(this), t;
   }
   free() {
-    let e = this.__destroy_into_raw();
-    r.__wbg_r2range_free(e, 0);
+    let t = this.__destroy_into_raw();
+    r.__wbg_r2range_free(t, 0);
   }
   get offset() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.__wbg_get_r2range_offset(this.__wbg_ptr);
-    return e[0] === 0 ? void 0 : e[1];
+    let t = r.__wbg_get_r2range_offset(this.__wbg_ptr);
+    return t[0] === 0 ? void 0 : t[1];
   }
-  set offset(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set offset(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_r2range_offset(this.__wbg_ptr, !u(e), u(e) ? 0 : e);
+    r.__wbg_set_r2range_offset(this.__wbg_ptr, !f(t), f(t) ? 0 : t);
   }
   get length() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.__wbg_get_r2range_length(this.__wbg_ptr);
-    return e[0] === 0 ? void 0 : e[1];
+    let t = r.__wbg_get_r2range_length(this.__wbg_ptr);
+    return t[0] === 0 ? void 0 : t[1];
   }
-  set length(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set length(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_r2range_length(this.__wbg_ptr, !u(e), u(e) ? 0 : e);
+    r.__wbg_set_r2range_length(this.__wbg_ptr, !f(t), f(t) ? 0 : t);
   }
   get suffix() {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    let e = r.__wbg_get_r2range_suffix(this.__wbg_ptr);
-    return e[0] === 0 ? void 0 : e[1];
+    let t = r.__wbg_get_r2range_suffix(this.__wbg_ptr);
+    return t[0] === 0 ? void 0 : t[1];
   }
-  set suffix(e) {
-    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== o)
+  set suffix(t) {
+    if (this.__wbg_inst !== void 0 && this.__wbg_inst !== i)
       throw new Error("Invalid stale object from previous Wasm instance");
-    r.__wbg_set_r2range_suffix(this.__wbg_ptr, !u(e), u(e) ? 0 : e);
+    r.__wbg_set_r2range_suffix(this.__wbg_ptr, !f(t), f(t) ? 0 : t);
   }
-}, __name(_a6, "I"), _a6);
-Symbol.dispose && (I.prototype[Symbol.dispose] = I.prototype.free);
-var P = { __wbindgen_placeholder__: { __wbg_String_8f0eb39a4a4c2f66: function(t, e) {
-  let n = String(e), i = h(n, r.__wbindgen_malloc, r.__wbindgen_realloc), _ = g;
-  b().setInt32(t + 4, _, true), b().setInt32(t + 0, i, true);
-}, __wbg_body_78d0ac75aa69aa32: function(t) {
-  let e = t.body;
-  return u(e) ? 0 : w(e);
-}, __wbg_buffer_8d40b1d762fb3c66: function(t) {
-  return t.buffer;
-}, __wbg_byobRequest_2c036bceca1e6037: function(t) {
-  let e = t.byobRequest;
-  return u(e) ? 0 : w(e);
-}, __wbg_byteLength_331a6b5545834024: function(t) {
-  return t.byteLength;
-}, __wbg_byteOffset_49a5b5608000358b: function(t) {
-  return t.byteOffset;
-}, __wbg_call_13410aac570ffff7: function() {
-  return s(function(t, e) {
-    return t.call(e);
+}, __name(_a6, "E"), _a6);
+Symbol.dispose && (E.prototype[Symbol.dispose] = E.prototype.free);
+var N = { __wbindgen_placeholder__: { __wbg_String_8f0eb39a4a4c2f66: function(e, t) {
+  let n = String(t), _ = m(n, r.__wbindgen_malloc, r.__wbindgen_realloc), o = g;
+  b().setInt32(e + 4, o, true), b().setInt32(e + 0, _, true);
+}, __wbg___wbindgen_debug_string_df47ffb5e35e6763: function(e, t) {
+  let n = L(t), _ = m(n, r.__wbindgen_malloc, r.__wbindgen_realloc), o = g;
+  b().setInt32(e + 4, o, true), b().setInt32(e + 0, _, true);
+}, __wbg___wbindgen_is_falsy_46b8d2f2aba49112: function(e) {
+  return !e;
+}, __wbg___wbindgen_is_function_ee8a6c5833c90377: function(e) {
+  return typeof e == "function";
+}, __wbg___wbindgen_is_object_c818261d21f283a4: function(e) {
+  let t = e;
+  return typeof t == "object" && t !== null;
+}, __wbg___wbindgen_is_string_fbb76cb2940daafd: function(e) {
+  return typeof e == "string";
+}, __wbg___wbindgen_is_undefined_2d472862bd29a478: function(e) {
+  return e === void 0;
+}, __wbg___wbindgen_string_get_e4f06c90489ad01b: function(e, t) {
+  let n = t, _ = typeof n == "string" ? n : void 0;
+  var o = f(_) ? 0 : m(_, r.__wbindgen_malloc, r.__wbindgen_realloc), u = g;
+  b().setInt32(e + 4, u, true), b().setInt32(e + 0, o, true);
+}, __wbg___wbindgen_throw_b855445ff6a94295: function(e, t) {
+  throw new Error(l(e, t));
+}, __wbg__wbg_cb_unref_2454a539ea5790d9: function(e) {
+  e._wbg_cb_unref();
+}, __wbg_body_134fbdf9222264fa: function(e) {
+  let t = e.body;
+  return f(t) ? 0 : w(t);
+}, __wbg_buffer_ccc4520b36d3ccf4: function(e) {
+  return e.buffer;
+}, __wbg_byobRequest_2344e6975f27456e: function(e) {
+  let t = e.byobRequest;
+  return f(t) ? 0 : w(t);
+}, __wbg_byteLength_bcd42e4025299788: function(e) {
+  return e.byteLength;
+}, __wbg_byteOffset_ca3a6cf7944b364b: function(e) {
+  return e.byteOffset;
+}, __wbg_call_525440f72fbfc0ea: function() {
+  return s(function(e, t, n) {
+    return e.call(t, n);
   }, arguments);
-}, __wbg_call_a5400b25a865cfd8: function() {
-  return s(function(t, e, n) {
-    return t.call(e, n);
+}, __wbg_call_e762c39fa8ea36bf: function() {
+  return s(function(e, t) {
+    return e.call(t);
   }, arguments);
-}, __wbg_cancel_8bb5b8f4906b658a: function(t) {
-  return t.cancel();
-}, __wbg_catch_c80ecae90cb8ed4e: function(t, e) {
-  return t.catch(e);
-}, __wbg_cause_61050b860539c54b: function(t) {
-  return t.cause;
-}, __wbg_cf_b1ad1dbf5d915558: function() {
-  return s(function(t) {
-    let e = t.cf;
-    return u(e) ? 0 : w(e);
+}, __wbg_cancel_48ab6f9dc366e369: function(e) {
+  return e.cancel();
+}, __wbg_catch_943836faa5d29bfb: function(e, t) {
+  return e.catch(t);
+}, __wbg_cause_2551549fc39b3b73: function(e) {
+  return e.cause;
+}, __wbg_cf_909cdf99a01f342e: function() {
+  return s(function(e) {
+    let t = e.cf;
+    return f(t) ? 0 : w(t);
   }, arguments);
-}, __wbg_close_37f6f0a06ac796c6: function(t) {
-  return t.close();
-}, __wbg_close_cccada6053ee3a65: function() {
-  return s(function(t) {
-    t.close();
+}, __wbg_close_5a6caed3231b68cd: function() {
+  return s(function(e) {
+    e.close();
   }, arguments);
-}, __wbg_close_d71a78219dc23e91: function() {
-  return s(function(t) {
-    t.close();
+}, __wbg_close_6956df845478561a: function() {
+  return s(function(e) {
+    e.close();
   }, arguments);
-}, __wbg_connect_3c97107b1584d4a7: function() {
-  return s(function(t, e) {
-    return D(t, e);
+}, __wbg_close_dd3c97459a36cc60: function(e) {
+  return e.close();
+}, __wbg_connect_13f39c64b4dba24b: function() {
+  return s(function(e, t) {
+    return G(e, t);
   }, arguments);
-}, __wbg_crypto_574e78ad8b13b65f: function(t) {
-  return t.crypto;
-}, __wbg_done_75ed0ee6dd243d9d: function(t) {
-  return t.done;
-}, __wbg_enqueue_452bc2343d1c2ff9: function() {
-  return s(function(t, e) {
-    t.enqueue(e);
+}, __wbg_crypto_574e78ad8b13b65f: function(e) {
+  return e.crypto;
+}, __wbg_done_2042aa2670fb1db1: function(e) {
+  return e.done;
+}, __wbg_enqueue_7b18a650aec77898: function() {
+  return s(function(e, t) {
+    e.enqueue(t);
   }, arguments);
-}, __wbg_entries_52c6afbe1794bc36: function(t) {
-  return t.entries();
-}, __wbg_error_4700bbeb78363714: function(t, e) {
-  console.error(t, e);
-}, __wbg_error_7534b8e9a36f1ab4: function(t, e) {
-  let n, i;
+}, __wbg_entries_e383c0065742ec0c: function(e) {
+  return e.entries();
+}, __wbg_error_6f1d0762f6c8ae2f: function(e, t) {
+  console.error(e, t);
+}, __wbg_error_7534b8e9a36f1ab4: function(e, t) {
+  let n, _;
   try {
-    n = t, i = e, console.error(d(t, e));
+    n = e, _ = t, console.error(l(e, t));
   } finally {
-    r.__wbindgen_free(n, i, 1);
+    r.__wbindgen_free(n, _, 1);
   }
-}, __wbg_error_99981e16d476aa5c: function(t) {
-  console.error(t);
+}, __wbg_error_a7f8fbb0523dae15: function(e) {
+  console.error(e);
 }, __wbg_getRandomValues_b8f5dbd5f3995a9e: function() {
-  return s(function(t, e) {
-    t.getRandomValues(e);
+  return s(function(e, t) {
+    e.getRandomValues(t);
   }, arguments);
+}, __wbg_getReader_15e2d3098e32c359: function(e) {
+  return e.getReader();
 }, __wbg_getReader_48e00749fe3f6089: function() {
-  return s(function(t) {
-    return t.getReader();
+  return s(function(e) {
+    return e.getReader();
   }, arguments);
-}, __wbg_getReader_b31811cbe47772c1: function(t) {
-  return t.getReader();
-}, __wbg_getWriter_03d7689e275ac6a4: function() {
-  return s(function(t) {
-    return t.getWriter();
+}, __wbg_getWriter_c891ce50cc187493: function() {
+  return s(function(e) {
+    return e.getWriter();
   }, arguments);
-}, __wbg_get_0da715ceaecea5c8: function(t, e) {
-  return t[e >>> 0];
-}, __wbg_get_458e874b43b18b25: function() {
-  return s(function(t, e) {
-    return Reflect.get(t, e);
+}, __wbg_get_7bed016f185add81: function(e, t) {
+  return e[t >>> 0];
+}, __wbg_get_done_a0463af43a1fc764: function(e) {
+  let t = e.done;
+  return f(t) ? 16777215 : t ? 1 : 0;
+}, __wbg_get_efcb449f58ec27c2: function() {
+  return s(function(e, t) {
+    return Reflect.get(e, t);
   }, arguments);
-}, __wbg_getdone_f026246f6bbe58d3: function(t) {
-  let e = t.done;
-  return u(e) ? 16777215 : e ? 1 : 0;
-}, __wbg_getvalue_31e5a08f61e5aa42: function(t) {
-  return t.value;
-}, __wbg_headers_af04c3eb495104ed: function(t) {
-  return t.headers;
-}, __wbg_instanceof_Error_76149ae9b431750e: function(t) {
-  let e;
+}, __wbg_get_value_5ce96c9f81ce7398: function(e) {
+  return e.value;
+}, __wbg_headers_7ae6dbb1272f8fc6: function(e) {
+  return e.headers;
+}, __wbg_instanceof_Error_a944ec10920129e2: function(e) {
+  let t;
   try {
-    e = t instanceof Error;
+    t = e instanceof Error;
   } catch {
-    e = false;
+    t = false;
   }
-  return e;
-}, __wbg_instanceof_ReadableStreamDefaultReader_3af4eea5dfde4c26: function(t) {
-  let e;
+  return t;
+}, __wbg_instanceof_ReadableStreamDefaultReader_33a4601dd218c69d: function(e) {
+  let t;
   try {
-    e = t instanceof ReadableStreamDefaultReader;
+    t = e instanceof ReadableStreamDefaultReader;
   } catch {
-    e = false;
+    t = false;
   }
-  return e;
-}, __wbg_instanceof_ReadableStream_c4b8ebd11b2bc326: function(t) {
-  let e;
+  return t;
+}, __wbg_instanceof_ReadableStream_c34776a5fb889c65: function(e) {
+  let t;
   try {
-    e = t instanceof ReadableStream;
+    t = e instanceof ReadableStream;
   } catch {
-    e = false;
+    t = false;
   }
-  return e;
-}, __wbg_length_6bb7e81f9d7713e4: function(t) {
-  return t.length;
-}, __wbg_log_6c7b5f4f00b8ce3f: function(t) {
-  console.log(t);
-}, __wbg_method_8e0e977407edb4c6: function(t, e) {
-  let n = e.method, i = h(n, r.__wbindgen_malloc, r.__wbindgen_realloc), _ = g;
-  b().setInt32(t + 4, _, true), b().setInt32(t + 0, i, true);
-}, __wbg_msCrypto_a61aeb35a24c1329: function(t) {
-  return t.msCrypto;
-}, __wbg_new_19c25a3f2fa63a02: function() {
+  return t;
+}, __wbg_length_69bca3cb64fc8748: function(e) {
+  return e.length;
+}, __wbg_log_8cec76766b8c0e33: function(e) {
+  console.log(e);
+}, __wbg_method_07a9b3454994db22: function(e, t) {
+  let n = t.method, _ = m(n, r.__wbindgen_malloc, r.__wbindgen_realloc), o = g;
+  b().setInt32(e + 4, o, true), b().setInt32(e + 0, _, true);
+}, __wbg_msCrypto_a61aeb35a24c1329: function(e) {
+  return e.msCrypto;
+}, __wbg_new_1acc0b6eea89d040: function() {
   return new Object();
-}, __wbg_new_2e3c58a15f39f5f9: function(t, e) {
+}, __wbg_new_3c3d849046688a66: function(e, t) {
   try {
-    var n = { a: t, b: e }, i = /* @__PURE__ */ __name((a, c) => {
-      let f = n.a;
+    var n = { a: e, b: t }, _ = /* @__PURE__ */ __name((u, c) => {
+      let a = n.a;
       n.a = 0;
       try {
-        return N(f, n.b, a, c);
+        return ee(a, n.b, u, c);
       } finally {
-        n.a = f;
+        n.a = a;
       }
-    }, "i");
-    return new Promise(i);
+    }, "_");
+    return new Promise(_);
   } finally {
     n.a = n.b = 0;
   }
 }, __wbg_new_8a6f238a6ece86ea: function() {
   return new Error();
-}, __wbg_new_da9dc54c5db29dfa: function(t, e) {
-  return new Error(d(t, e));
-}, __wbg_new_f6e53210afea8e45: function() {
+}, __wbg_new_9edf9838a2def39c: function() {
   return s(function() {
     return new Headers();
   }, arguments);
-}, __wbg_newfromslice_074c56947bd43469: function(t, e) {
-  return new Uint8Array(j(t, e));
-}, __wbg_newnoargs_254190557c45b4ec: function(t, e) {
-  return new Function(d(t, e));
-}, __wbg_newwithbyteoffsetandlength_e8f53910b4d42b45: function(t, e, n) {
-  return new Uint8Array(t, e >>> 0, n >>> 0);
-}, __wbg_newwithintounderlyingsource_b47f6a6a596a7f24: function(t, e) {
-  return new ReadableStream(p.__wrap(t), e);
-}, __wbg_newwithlength_a167dcc7aaa3ba77: function(t) {
-  return new Uint8Array(t >>> 0);
-}, __wbg_newwithoptbuffersourceandinit_b492b23a1fc82449: function() {
-  return s(function(t, e) {
-    return new Response(t, e);
+}, __wbg_new_a7442b4b19c1a356: function(e, t) {
+  return new Error(l(e, t));
+}, __wbg_new_from_slice_92f4d78ca282a2d2: function(e, t) {
+  return new Uint8Array(P(e, t));
+}, __wbg_new_no_args_ee98eee5275000a4: function(e, t) {
+  return new Function(l(e, t));
+}, __wbg_new_with_byte_offset_and_length_46e3e6a5e9f9e89b: function(e, t, n) {
+  return new Uint8Array(e, t >>> 0, n >>> 0);
+}, __wbg_new_with_into_underlying_source_b47f6a6a596a7f24: function(e, t) {
+  return new ReadableStream(h.__wrap(e), t);
+}, __wbg_new_with_length_01aa0dc35aa13543: function(e) {
+  return new Uint8Array(e >>> 0);
+}, __wbg_new_with_opt_buffer_source_and_init_d7e792cdf59c8ea6: function() {
+  return s(function(e, t) {
+    return new Response(e, t);
   }, arguments);
-}, __wbg_newwithoptreadablestreamandinit_438b8943bcc5c115: function() {
-  return s(function(t, e) {
-    return new Response(t, e);
+}, __wbg_new_with_opt_readable_stream_and_init_b3dac7204db32cac: function() {
+  return s(function(e, t) {
+    return new Response(e, t);
   }, arguments);
-}, __wbg_newwithoptstrandinit_e43b4aa9635e7001: function() {
-  return s(function(t, e, n) {
-    return new Response(t === 0 ? void 0 : d(t, e), n);
+}, __wbg_new_with_opt_str_and_init_271896583401be6f: function() {
+  return s(function(e, t, n) {
+    return new Response(e === 0 ? void 0 : l(e, t), n);
   }, arguments);
-}, __wbg_next_692e82279131b03c: function() {
-  return s(function(t) {
-    return t.next();
+}, __wbg_next_020810e0ae8ebcb0: function() {
+  return s(function(e) {
+    return e.next();
   }, arguments);
-}, __wbg_node_905d3e251edff8a2: function(t) {
-  return t.node;
-}, __wbg_now_1e80617bcee43265: function() {
+}, __wbg_node_905d3e251edff8a2: function(e) {
+  return e.node;
+}, __wbg_now_793306c526e2e3b6: function() {
   return Date.now();
-}, __wbg_opened_f640a72bf5d9c717: function() {
-  return s(function(t) {
-    return t.opened;
+}, __wbg_opened_e8d7733e4bb7081e: function() {
+  return s(function(e) {
+    return e.opened;
   }, arguments);
-}, __wbg_process_dc0fbacc7c1c06f7: function(t) {
-  return t.process;
-}, __wbg_prototypesetcall_3d4a26c1ed734349: function(t, e, n) {
-  Uint8Array.prototype.set.call(j(t, e), n);
-}, __wbg_queueMicrotask_25d0739ac89e8c88: function(t) {
-  queueMicrotask(t);
-}, __wbg_queueMicrotask_4488407636f5bf24: function(t) {
-  return t.queueMicrotask;
+}, __wbg_process_dc0fbacc7c1c06f7: function(e) {
+  return e.process;
+}, __wbg_prototypesetcall_2a6620b6922694b2: function(e, t, n) {
+  Uint8Array.prototype.set.call(P(e, t), n);
+}, __wbg_queueMicrotask_34d692c25c47d05b: function(e) {
+  return e.queueMicrotask;
+}, __wbg_queueMicrotask_9d76cacb20c84d58: function(e) {
+  queueMicrotask(e);
 }, __wbg_randomFillSync_ac0988aba3254290: function() {
-  return s(function(t, e) {
-    t.randomFillSync(e);
+  return s(function(e, t) {
+    e.randomFillSync(t);
   }, arguments);
-}, __wbg_read_bc925c758aa4d897: function(t) {
-  return t.read();
-}, __wbg_readable_38a5dcfd06e00a09: function() {
-  return s(function(t) {
-    return t.readable;
+}, __wbg_read_48f1593df542f968: function(e) {
+  return e.read();
+}, __wbg_readable_a44199f2cc75b645: function() {
+  return s(function(e) {
+    return e.readable;
   }, arguments);
-}, __wbg_releaseLock_62151472ae632176: function(t) {
-  t.releaseLock();
-}, __wbg_releaseLock_ff29b586502a8221: function(t) {
-  t.releaseLock();
+}, __wbg_releaseLock_5d0b5a68887b891d: function(e) {
+  e.releaseLock();
+}, __wbg_releaseLock_b6532de53da4cce6: function(e) {
+  e.releaseLock();
 }, __wbg_require_60cc747a6bc5215a: function() {
   return s(function() {
     return module.require;
   }, arguments);
-}, __wbg_resolve_4055c623acdd6a1b: function(t) {
-  return Promise.resolve(t);
-}, __wbg_respond_6c2c4e20ef85138e: function() {
-  return s(function(t, e) {
-    t.respond(e >>> 0);
+}, __wbg_resolve_caf97c30b83f7053: function(e) {
+  return Promise.resolve(e);
+}, __wbg_respond_0f4dbf5386f5c73e: function() {
+  return s(function(e, t) {
+    e.respond(t >>> 0);
   }, arguments);
-}, __wbg_set_1353b2a5e96bc48c: function(t, e, n) {
-  t.set(j(e, n));
-}, __wbg_set_1c17f9738fac2718: function() {
-  return s(function(t, e, n, i, _) {
-    t.set(d(e, n), d(i, _));
+}, __wbg_set_8b342d8cd9d2a02c: function() {
+  return s(function(e, t, n, _, o) {
+    e.set(l(t, n), l(_, o));
   }, arguments);
-}, __wbg_set_453345bcda80b89a: function() {
-  return s(function(t, e, n) {
-    return Reflect.set(t, e, n);
+}, __wbg_set_9e6516df7b7d0f19: function(e, t, n) {
+  e.set(P(t, n));
+}, __wbg_set_c2abbebe8b9ebee1: function() {
+  return s(function(e, t, n) {
+    return Reflect.set(e, t, n);
   }, arguments);
-}, __wbg_setheaders_ea17f6abcffa069c: function(t, e) {
-  t.headers = e;
-}, __wbg_sethighwatermark_3d5961f834647d41: function(t, e) {
-  t.highWaterMark = e;
-}, __wbg_setstatus_5964ea9c49463997: function(t, e) {
-  t.status = e;
-}, __wbg_stack_0ed75d68575b0f3c: function(t, e) {
-  let n = e.stack, i = h(n, r.__wbindgen_malloc, r.__wbindgen_realloc), _ = g;
-  b().setInt32(t + 4, _, true), b().setInt32(t + 0, i, true);
-}, __wbg_static_accessor_GLOBAL_8921f820c2ce3f12: function() {
-  let t = typeof global > "u" ? null : global;
-  return u(t) ? 0 : w(t);
-}, __wbg_static_accessor_GLOBAL_THIS_f0a4409105898184: function() {
-  let t = typeof globalThis > "u" ? null : globalThis;
-  return u(t) ? 0 : w(t);
-}, __wbg_static_accessor_SELF_995b214ae681ff99: function() {
-  let t = typeof self > "u" ? null : self;
-  return u(t) ? 0 : w(t);
-}, __wbg_static_accessor_WINDOW_cde3890479c675ea: function() {
-  let t = typeof window > "u" ? null : window;
-  return u(t) ? 0 : w(t);
-}, __wbg_subarray_70fd07feefe14294: function(t, e, n) {
-  return t.subarray(e >>> 0, n >>> 0);
-}, __wbg_then_b33a773d723afa3e: function(t, e, n) {
-  return t.then(e, n);
-}, __wbg_then_e22500defe16819f: function(t, e) {
-  return t.then(e);
-}, __wbg_toString_d8f537919ef401d6: function(t) {
-  return t.toString();
-}, __wbg_url_79bd91c4e84e8270: function(t, e) {
-  let n = e.url, i = h(n, r.__wbindgen_malloc, r.__wbindgen_realloc), _ = g;
-  b().setInt32(t + 4, _, true), b().setInt32(t + 0, i, true);
-}, __wbg_value_dd9372230531eade: function(t) {
-  return t.value;
-}, __wbg_versions_c01dfd4722a88165: function(t) {
-  return t.versions;
-}, __wbg_view_91cc97d57ab30530: function(t) {
-  let e = t.view;
-  return u(e) ? 0 : w(e);
-}, __wbg_wbindgencbdrop_eb10308566512b88: function(t) {
-  let e = t.original;
-  return e.cnt-- == 1 ? (e.a = 0, true) : false;
-}, __wbg_wbindgendebugstring_99ef257a3ddda34d: function(t, e) {
-  let n = k(e), i = h(n, r.__wbindgen_malloc, r.__wbindgen_realloc), _ = g;
-  b().setInt32(t + 4, _, true), b().setInt32(t + 0, i, true);
-}, __wbg_wbindgenisfalsy_03f4059e2ea4ee87: function(t) {
-  return !t;
-}, __wbg_wbindgenisfunction_8cee7dce3725ae74: function(t) {
-  return typeof t == "function";
-}, __wbg_wbindgenisobject_307a53c6bd97fbf8: function(t) {
-  let e = t;
-  return typeof e == "object" && e !== null;
-}, __wbg_wbindgenisstring_d4fa939789f003b0: function(t) {
-  return typeof t == "string";
-}, __wbg_wbindgenisundefined_c4b71d073b92f3c5: function(t) {
-  return t === void 0;
-}, __wbg_wbindgenstringget_0f16a6ddddef376f: function(t, e) {
-  let n = e, i = typeof n == "string" ? n : void 0;
-  var _ = u(i) ? 0 : h(i, r.__wbindgen_malloc, r.__wbindgen_realloc), a = g;
-  b().setInt32(t + 4, a, true), b().setInt32(t + 0, _, true);
-}, __wbg_wbindgenthrow_451ec1a8469d7eb6: function(t, e) {
-  throw new Error(d(t, e));
-}, __wbg_writable_eb1ff1bb8001323c: function() {
-  return s(function(t) {
-    return t.writable;
+}, __wbg_set_headers_107379072e02fee5: function(e, t) {
+  e.headers = t;
+}, __wbg_set_high_water_mark_5142ac1d2fb46365: function(e, t) {
+  e.highWaterMark = t;
+}, __wbg_set_status_886bf143c25d0706: function(e, t) {
+  e.status = t;
+}, __wbg_stack_0ed75d68575b0f3c: function(e, t) {
+  let n = t.stack, _ = m(n, r.__wbindgen_malloc, r.__wbindgen_realloc), o = g;
+  b().setInt32(e + 4, o, true), b().setInt32(e + 0, _, true);
+}, __wbg_static_accessor_GLOBAL_89e1d9ac6a1b250e: function() {
+  let e = typeof global > "u" ? null : global;
+  return f(e) ? 0 : w(e);
+}, __wbg_static_accessor_GLOBAL_THIS_8b530f326a9e48ac: function() {
+  let e = typeof globalThis > "u" ? null : globalThis;
+  return f(e) ? 0 : w(e);
+}, __wbg_static_accessor_SELF_6fdf4b64710cc91b: function() {
+  let e = typeof self > "u" ? null : self;
+  return f(e) ? 0 : w(e);
+}, __wbg_static_accessor_WINDOW_b45bfc5a37f6cfa2: function() {
+  let e = typeof window > "u" ? null : window;
+  return f(e) ? 0 : w(e);
+}, __wbg_subarray_480600f3d6a9f26c: function(e, t, n) {
+  return e.subarray(t >>> 0, n >>> 0);
+}, __wbg_then_4f46f6544e6b4a28: function(e, t) {
+  return e.then(t);
+}, __wbg_then_70d05cf780a18d77: function(e, t, n) {
+  return e.then(t, n);
+}, __wbg_toString_8eec07f6f4c057e4: function(e) {
+  return e.toString();
+}, __wbg_url_3e15bfb59fa6b660: function(e, t) {
+  let n = t.url, _ = m(n, r.__wbindgen_malloc, r.__wbindgen_realloc), o = g;
+  b().setInt32(e + 4, o, true), b().setInt32(e + 0, _, true);
+}, __wbg_value_692627309814bb8c: function(e) {
+  return e.value;
+}, __wbg_versions_c01dfd4722a88165: function(e) {
+  return e.versions;
+}, __wbg_view_f6c15ac9fed63bbd: function(e) {
+  let t = e.view;
+  return f(t) ? 0 : w(t);
+}, __wbg_writable_4c2a4f21f74ac302: function() {
+  return s(function(e) {
+    return e.writable;
   }, arguments);
-}, __wbg_write_2e39e04a4c8c9e9d: function(t, e) {
-  return t.write(e);
-}, __wbindgen_cast_2241b6af4c4b2941: function(t, e) {
-  return d(t, e);
-}, __wbindgen_cast_6858675ce130c472: function(t, e) {
-  return H(t, e, 1219, $);
-}, __wbindgen_cast_cb9088102bce6b30: function(t, e) {
-  return j(t, e);
-}, __wbindgen_cast_d6cd19b81560fd6e: function(t) {
-  return t;
+}, __wbg_write_5f693b62e780062e: function(e, t) {
+  return e.write(t);
+}, __wbindgen_cast_2241b6af4c4b2941: function(e, t) {
+  return l(e, t);
+}, __wbindgen_cast_bd249ea5b7ce5dd1: function(e, t) {
+  return Q(e, t, r.wasm_bindgen__closure__destroy__h4fba4fb83c696808, Z);
+}, __wbindgen_cast_cb9088102bce6b30: function(e, t) {
+  return P(e, t);
+}, __wbindgen_cast_d6cd19b81560fd6e: function(e) {
+  return e;
 }, __wbindgen_init_externref_table: function() {
-  let t = r.__wbindgen_export_3, e = t.grow(4);
-  t.set(0, void 0), t.set(e + 0, void 0), t.set(e + 1, null), t.set(e + 2, true), t.set(e + 3, false);
+  let e = r.__wbindgen_externrefs, t = e.grow(4);
+  e.set(0, void 0), e.set(t + 0, void 0), e.set(t + 1, null), e.set(t + 2, true), e.set(t + 3, false);
 } } };
-var tt = new WebAssembly.Instance(L, P);
-r = tt.exports;
+var se = new WebAssembly.Instance(H, N);
+r = se.exports;
 r.__wbindgen_start();
 Error.stackTraceLimit = 100;
-var C = null;
-function rt() {
-  z && z(function(t) {
-    C = new Error("Critical Rust panic: " + t), console.error(C);
+var k = false;
+function J() {
+  U && U(function(e) {
+    let t = new Error("Rust panic: " + e);
+    console.error("Critical", t), k = true;
   });
 }
-__name(rt, "rt");
-rt();
-var A = 0;
-var F = { construct(t, e, n) {
-  let i = { instance: Reflect.construct(t, e, n), instanceId: A, ctor: t, args: e, newTarget: n };
-  return new Proxy(i, { get(_, a, c) {
-    return _.instanceId !== A && (_.instance = Reflect.construct(_.ctor, _.args, _.newTarget), _.instanceId = A), Reflect.get(_.instance, a, c);
-  } });
+__name(J, "J");
+J();
+var z = 0;
+function C() {
+  k && (console.log("Reinitializing Wasm application"), $(), k = false, J(), z++);
+}
+__name(C, "C");
+addEventListener("error", (e) => {
+  T(e.error);
+});
+function T(e) {
+  e instanceof WebAssembly.RuntimeError && (console.error("Critical", e), k = true);
+}
+__name(T, "T");
+var _a7;
+var O = (_a7 = class extends ae {
+}, __name(_a7, "O"), _a7);
+O.prototype.fetch2 = B;
+var ue = { set: (e, t, n, _) => Reflect.set(e.instance, t, n, _), has: (e, t) => Reflect.has(e.instance, t), deleteProperty: (e, t) => Reflect.deleteProperty(e.instance, t), apply: (e, t, n) => Reflect.apply(e.instance, t, n), construct: (e, t, n) => Reflect.construct(e.instance, t, n), getPrototypeOf: (e) => Reflect.getPrototypeOf(e.instance), setPrototypeOf: (e, t) => Reflect.setPrototypeOf(e.instance, t), isExtensible: (e) => Reflect.isExtensible(e.instance), preventExtensions: (e) => Reflect.preventExtensions(e.instance), getOwnPropertyDescriptor: (e, t) => Reflect.getOwnPropertyDescriptor(e.instance, t), defineProperty: (e, t, n) => Reflect.defineProperty(e.instance, t, n), ownKeys: (e) => Reflect.ownKeys(e.instance) };
+var y = { construct(e, t, n) {
+  try {
+    C();
+    let _ = { instance: Reflect.construct(e, t, n), instanceId: z, ctor: e, args: t, newTarget: n };
+    return new Proxy(_, { ...ue, get(o, u, c) {
+      o.instanceId !== z && (o.instance = Reflect.construct(o.ctor, o.args, o.newTarget), o.instanceId = z);
+      let a = Reflect.get(o.instance, u, c);
+      return typeof a != "function" ? a : a.constructor === Function ? new Proxy(a, { apply(d, A, M) {
+        C();
+        try {
+          return d.apply(A, M);
+        } catch (F) {
+          throw T(F), F;
+        }
+      } }) : new Proxy(a, { async apply(d, A, M) {
+        C();
+        try {
+          return await d.apply(A, M);
+        } catch (F) {
+          throw T(F), F;
+        }
+      } });
+    } });
+  } catch (_) {
+    throw k = true, _;
+  }
 } };
-var ct = new Proxy(y, F);
-var ut = new Proxy(m, F);
-var at = new Proxy(x, F);
-var ft = new Proxy(p, F);
-var bt = new Proxy(v, F);
-var gt = new Proxy(I, F);
+var we = new Proxy(O, y);
+var de = new Proxy(v, y);
+var le = new Proxy(x, y);
+var pe = new Proxy(I, y);
+var he = new Proxy(h, y);
+var ye = new Proxy(R, y);
+var me = new Proxy(E, y);
 
 // fetch2.ts
+var wasmFetch2 = we.prototype.fetch2;
 var IGNORED_HEADERS = /* @__PURE__ */ new Set([
   "cf-connecting-ip",
   // Cloudflare connecting IP
@@ -796,7 +841,7 @@ var _Fetch2 = class _Fetch2 {
    * const response = await fetcher.fetch("https://example.com");
    */
   constructor() {
-    this.wasmFetch2 = ot;
+    this.wasmFetch2 = wasmFetch2;
   }
   /**
    * Removes conflicting headers from target Headers object
@@ -876,10 +921,10 @@ var _Fetch2 = class _Fetch2 {
     }
   }
   /**
-   * Makes an HTTP request using cf-proxy with fetch-compatible API
+   * Makes an HTTP request using cloudflare-stealth with fetch-compatible API
    * 
    * This method provides a fetch-compatible interface for making HTTP requests
-   * through the cf-proxy. It handles URL parsing, header management, body
+   * through the cloudflare-stealth. It handles URL parsing, header management, body
    * processing, and request forwarding to the WASM implementation.
    * 
    * @param {RequestInfo | URL} input - The URL or Request object to fetch
@@ -914,7 +959,7 @@ var _Fetch2 = class _Fetch2 {
    * @example
    * // Using with URL object
    * const url = new URL("https://api.example.com/search");
-   * url.searchParams.set("q", "cf-proxy");
+   * url.searchParams.set("q", "cloudflare-stealth");
    * const response = await fetch2(url);
    */
   async fetch(input, init = {}) {
@@ -980,7 +1025,7 @@ var _Fetch2 = class _Fetch2 {
     return response;
   }
   /**
-   * Static method for making HTTP requests using cf-proxy
+   * Static method for making HTTP requests using cloudflare-stealth
    * 
    * This static method provides a convenient way to use fetch2 without
    * creating an instance. It uses a singleton pattern internally for

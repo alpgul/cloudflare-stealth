@@ -13,8 +13,8 @@ crate-type = ["cdylib"]
 [dependencies]
 getrandom = { version = "0.2", features = ["js"] }
 tokio = { version = "1.47.1", features = ["io-util", "macros"] }
-worker = { version = "0.6", features = ["http"] }
-worker-macros = { version = "0.6" }
+worker = { version = "0.6.7", features = ["http"] }
+worker-macros = { version = "0.6.7" }
 
 # WASM32-unknown-unknown compatible TLS packages (without certificate verification)
 ring = { version = "0.17.7", features = ["wasm32_unknown_unknown_js"] }

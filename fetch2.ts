@@ -11,8 +11,8 @@
  * @since 1.0.0
  */
 
-import { fetch2 as wasmFetch2 } from "./build/index.js";
-
+import wasm from "./build/index.js";
+const wasmFetch2=wasm.prototype.fetch2
 /**
  * Request information type - compatible with native fetch API
  * 
