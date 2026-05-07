@@ -10,10 +10,17 @@
     "build/**/*"
   ],
   "scripts": {
-    "build:rust": "cargo install -q worker-build && worker-build --release",
-     "build:dist": "node esbuild.config.js",
+    "build:rust": "cargo install -q worker-build --version 0.1.14 && worker-build --release",
+    "build:dist": "node esbuild.config.js",
     "build": "npm run build:rust && npm run build:dist",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "fmt": "cargo fmt",
+    "fmt:check": "cargo fmt --check",
+    "clippy": "cargo clippy --all-targets --all-features -- -D warnings",
+    "clippy:fix": "cargo clippy --fix --all-targets --all-features --allow-dirty",
+    "lint": "npm run fmt:check && npm run clippy",
+    "lint:fix": "npm run fmt && npm run clippy:fix",
+    "test": "cargo test"
   },
   "keywords": [
     "cloudflare",

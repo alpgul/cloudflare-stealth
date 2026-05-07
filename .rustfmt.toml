@@ -1,0 +1,17 @@
+# rustfmt configuration for cloudflare-stealth
+# See: https://rust-lang.github.io/rustfmt/
+# This config uses only stable features to work with stable Rust toolchain
+
+# Basic formatting options
+max_width = 100
+hard_tabs = false
+tab_spaces = 4
+edition = "2021"
+
+# Function and struct formatting
+fn_params_layout = "Tall"
+
+# Other formatting options
+newline_style = "Unix"
+remove_nested_parens = true
+reorder_imports = true

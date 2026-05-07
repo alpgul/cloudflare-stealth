@@ -1,0 +1,20 @@
+# Clippy configuration for cloudflare-stealth
+# See: https://doc.rust-lang.org/clippy/configuration.html
+
+# Complexity thresholds
+cognitive-complexity-threshold = 30
+type-complexity-threshold = 250
+
+# Naming conventions
+enum-variant-name-threshold = 3
+
+# Performance settings
+trivial-copy-size-limit = 128
+too-many-arguments-threshold = 7
+too-many-lines-threshold = 100
+
+# Allow certain patterns common in WASM/async code
+avoid-breaking-exported-api = true
+
+# MSRV (Minimum Supported Rust Version)
+msrv = "1.75.0"

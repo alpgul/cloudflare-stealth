@@ -10,17 +10,30 @@ license = "MIT"
 [lib]
 crate-type = ["cdylib"]
 
+[patch.crates-io]
+rustls = { git = "https://github.com/alpgul/rustls-chrome", rev="5ee01e32d0a9ed2d9d0d5c15da2f1c1289e2bfa5" }
+
 [dependencies]
-getrandom = { version = "0.2", features = ["js"] }
+getrandom = { version = "0.3", features = ["wasm_js"] }
 tokio = { version = "1.47.1", features = ["io-util", "macros"] }
 worker = { version = "0.6.7", features = ["http"] }
 worker-macros = { version = "0.6.7" }
 
-# WASM32-unknown-unknown compatible TLS packages (without certificate verification)
-ring = { version = "0.17.7", features = ["wasm32_unknown_unknown_js"] }
+# WASM32-unknown-unknown compatible TLS packages
+ring = { version = "0.17.14", features = ["wasm32_unknown_unknown_js"] }
 tokio-rustls = { version = "0.26.0", default-features = false }
-rustls = { version = "0.23.18", default-features = false, features = ["ring"] }
+rustls = { version = "=0.23.34", default-features = false, features = ["ring","tls12"] }
 rustls-pki-types = { version = "1.10.0", features = ["web"] }
+rustls-platform-verifier = "0.6"
+webpki-root-certs = "1.0.5"
+
+# Pure-Rust HPKE (RFC 9180) - WASM compatible, used for ECH GREASE support
+# aws_lc_rs does not support wasm32-unknown-unknown, so we implement our own provider
+hpke = { version = "0.12", default-features = false, features = ["p256", "alloc"] }
+rand_core = { version = "0.6", features = ["getrandom"] }
+
+# Post-quantum ML-KEM support
+libcrux-ml-kem = { version = "0.0.8", default-features = false, features = ["mlkem768", "alloc"] }
 
 # HTTP support
 http = { version = "1.0", default-features = false }
@@ -42,3 +55,5 @@ url = "2.5"
 # Debugging and error handling
 console_error_panic_hook = "0.1"
 
+# Random number generation for ML-KEM
+rand = { version = "0.8", features = ["std"] }
