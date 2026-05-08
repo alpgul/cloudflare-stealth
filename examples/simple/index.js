@@ -37,7 +37,7 @@ export default {
         if (new URL(request.url).pathname !== "/") {
             return new Response("Not found", { status: 404 });
         }
-        const testResponse = await fetch2("https://tls.browserleaks.com/tls", {
+        const testResponse = await fetch2("https://tls.browserleaks.com/http2", {
             method: "GET",
             headers: request.headers,
             body: request.body,

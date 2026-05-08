@@ -12,48 +12,41 @@ crate-type = ["cdylib"]
 
 [patch.crates-io]
 rustls = { git = "https://github.com/alpgul/rustls-chrome", rev="5ee01e32d0a9ed2d9d0d5c15da2f1c1289e2bfa5" }
-
+h2 = { git = "https://github.com/alpgul/h2-chrome", rev="227a8da2c4ca5bfc0d3e22ba24118526f1a0fb9f" }
 [dependencies]
-getrandom = { version = "0.3", features = ["wasm_js"] }
-tokio = { version = "1.47.1", features = ["io-util", "macros"] }
-worker = { version = "0.6.7", features = ["http"] }
-worker-macros = { version = "0.6.7" }
+# WASM/Worker Runtime
+worker = { version = "0.8.1", features = ["http"] }
+worker-macros = { version = "0.8.1" }
+wasm-bindgen = "0.2.121"
+wasm-bindgen-futures = "0.4.71"
 
-# WASM32-unknown-unknown compatible TLS packages
+# TLS/SSL (WASM32 compatible)
 ring = { version = "0.17.14", features = ["wasm32_unknown_unknown_js"] }
-tokio-rustls = { version = "0.26.0", default-features = false }
+tokio-rustls = { version = "0.26.4", default-features = false }
 rustls = { version = "=0.23.34", default-features = false, features = ["ring","tls12"] }
-rustls-pki-types = { version = "1.10.0", features = ["web"] }
-rustls-platform-verifier = "0.6"
-webpki-root-certs = "1.0.5"
+rustls-pki-types = { version = "1.14.1", features = ["web"] }
+rustls-platform-verifier = "0.7.0"
+webpki-root-certs = "1.0.7"
 
-# Pure-Rust HPKE (RFC 9180) - WASM compatible, used for ECH GREASE support
-# aws_lc_rs does not support wasm32-unknown-unknown, so we implement our own provider
+# Cryptography & HPKE (RFC 9180)
 hpke = { version = "0.12", default-features = false, features = ["p256", "alloc"] }
 rand_core = { version = "0.6", features = ["getrandom"] }
-
-# Post-quantum ML-KEM support
 libcrux-ml-kem = { version = "0.0.8", default-features = false, features = ["mlkem768", "alloc"] }
+rand = { version = "0.10.1", features = ["std"] }
 
-# HTTP support
-http = { version = "1.0", default-features = false }
+# HTTP Client
+hyper = { version = "1.9.0", default-features = false, features = ["client", "http1", "http2"] }
+hyper-util = { version = "0.1.20", default-features = false, features = ["tokio"] }
+http-body-util = "0.1.3"
+http-body = "1.0.1"
+http = { version = "1.4.0", default-features = false }
+h2 = "=0.4.12"
 
-# Hyper HTTP client
-hyper = { version = "1.7.0", default-features = false, features = ["client", "http1", "http2"] }
-hyper-util = { version = "0.1.17", default-features = false, features = ["tokio"] }
-http-body-util = "0.1"
-http-body = "1.0"
+# Async Runtime & Futures
+tokio = { version = "1.52.2", features = ["io-util", "macros"] }
+futures = "0.3.32"
 
-# WASM futures support
-wasm-bindgen = "0.2"
-wasm-bindgen-futures = "0.4"
-futures = "0.3"
-
-# URL parsing
-url = "2.5"
-
-# Debugging and error handling
-console_error_panic_hook = "0.1"
-
-# Random number generation for ML-KEM
-rand = { version = "0.8", features = ["std"] }
+# Helper & Utilities
+getrandom = { version = "0.4.2", features = ["wasm_js"] }
+url = "2.5.8"
+console_error_panic_hook = "0.1.7"

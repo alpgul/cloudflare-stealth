@@ -10,7 +10,7 @@
     "build/**/*"
   ],
   "scripts": {
-    "build:rust": "cargo install -q worker-build --version 0.1.14 && worker-build --release",
+    "build:rust": "cargo install -q worker-build --version 0.8.1 && worker-build --release",
     "build:dist": "node esbuild.config.js",
     "build": "npm run build:rust && npm run build:dist",
     "clean": "rm -rf dist",
