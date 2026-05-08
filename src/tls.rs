@@ -50,25 +50,28 @@ use rustls_platform_verifier::Verifier;
 /// since `aws_lc_rs` does not support `wasm32-unknown-unknown`.
 static VANILLA_VERIFIER: OnceLock<Arc<Verifier>> = OnceLock::new();
 
-fn get_vanilla_verifier(provider: Arc<CryptoProvider>) -> Arc<Verifier> {
-    VANILLA_VERIFIER
-        .get_or_init(|| {
-            Arc::new(
-                Verifier::new_with_extra_roots(
-                    webpki_root_certs::TLS_SERVER_ROOT_CERTS.iter().cloned(),
-                    provider,
-                )
-                .expect("Failed to create certificate verifier with embedded CA roots"),
-            )
-        })
-        .clone()
+fn get_vanilla_verifier(provider: Arc<CryptoProvider>) -> Result<Arc<Verifier>, Box<dyn std::error::Error>> {
+    if let Some(verifier) = VANILLA_VERIFIER.get() {
+        return Ok(verifier.clone());
+    }
+
+    let verifier = Arc::new(
+        Verifier::new_with_extra_roots(
+            webpki_root_certs::TLS_SERVER_ROOT_CERTS.iter().cloned(),
+            provider,
+        )
+        .map_err(|e| format!("Failed to create certificate verifier with embedded CA roots: {}", e))?,
+    );
+
+    let _ = VANILLA_VERIFIER.set(verifier.clone());
+    Ok(verifier)
 }
 
-fn get_ech_mode() -> EchMode {
+fn get_ech_mode() -> Result<EchMode, Box<dyn std::error::Error>> {
     let (public_key, _) = GREASE_HPKE_SUITE
         .generate_key_pair()
-        .expect("HPKE key generation failed");
-    EchGreaseConfig::new(GREASE_HPKE_SUITE, public_key).into()
+        .map_err(|e| format!("HPKE key generation failed: {}", e))?;
+    Ok(EchGreaseConfig::new(GREASE_HPKE_SUITE, public_key).into())
 }
 
 pub async fn create_tls_connection_with_alpn(
@@ -79,15 +82,15 @@ pub async fn create_tls_connection_with_alpn(
     console_log!("🔒 Starting TLS handshake...");
 
     let provider = rustls::crypto::CryptoProvider::get_default()
-        .expect("CryptoProvider not installed")
+        .ok_or("CryptoProvider not installed")?
         .clone();
 
     // Configure Rustls with custom certificate verifier (platform verifier + webpki roots)
     let mut config = ClientConfig::builder_with_provider(provider.clone())
-        .with_ech(get_ech_mode())
-        .unwrap()
+        .with_ech(get_ech_mode()?)
+        .map_err(|e| format!("Failed to configure ECH: {}", e))?
         .dangerous()
-        .with_custom_certificate_verifier(get_vanilla_verifier(provider))
+        .with_custom_certificate_verifier(get_vanilla_verifier(provider)?)
         .with_no_client_auth();
     config.fingerprint = Some(Arc::new(ChromeFingerprint::INSTANCE));
 
@@ -110,8 +113,9 @@ pub async fn create_tls_connection_with_alpn(
     let connector = TlsConnector::from(Arc::new(config));
 
     // Perform TLS handshake
-    let host_static = Box::leak(host.to_string().into_boxed_str());
-    let server_name = rustls::pki_types::ServerName::try_from(host_static as &str).unwrap();
+    let server_name = rustls::pki_types::ServerName::try_from(host)
+        .map_err(|e| format!("Invalid DNS name {}: {}", host, e))?
+        .to_owned();
     let tls_stream = connector.connect(server_name, socket).await?;
 
     // TLS handshake successful!
