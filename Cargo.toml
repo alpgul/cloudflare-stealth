@@ -29,7 +29,7 @@ rustls-platform-verifier = "0.7.0"
 webpki-root-certs = "1.0.7"
 
 # Cryptography & HPKE (RFC 9180)
-hpke = { version = "0.12", default-features = false, features = ["p256", "alloc"] }
+hpke = { version = "0.13", default-features = false, features = ["p256", "alloc"] }
 rand_core = { version = "0.6", features = ["getrandom"] }
 libcrux-ml-kem = { version = "0.0.8", default-features = false, features = ["mlkem768", "alloc"] }
 rand = { version = "0.10.1", features = ["std"] }
