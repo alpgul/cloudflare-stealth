@@ -1,6 +1,6 @@
 [package]
 name = "cloudflare-stealth"
-version = "0.1.0"
+version = "1.1.0"
 edition = "2021"
 authors = ["alpgul <5773704+alpgul@users.noreply.github.com>"]
 description = "High-performance HTTP proxy implementation for Cloudflare Workers, built with Rust and WebAssembly"

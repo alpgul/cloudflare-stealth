@@ -1,6 +1,6 @@
 # cloudflare-stealth
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/alpgul/cloudflare-stealth)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/alpgul/cloudflare-stealth)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-1.70+-orange.svg)](https://www.rust-lang.org/)
 [![TypeScript](https://img.shields.io/badge/typescript-5.0+-blue.svg)](https://www.typescriptlang.org/)
