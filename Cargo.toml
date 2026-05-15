@@ -15,7 +15,7 @@ rustls = { git = "https://github.com/alpgul/rustls-chrome", rev="5ee01e32d0a9ed2
 h2 = { git = "https://github.com/alpgul/h2-chrome", rev="227a8da2c4ca5bfc0d3e22ba24118526f1a0fb9f" }
 [dependencies]
 # WASM/Worker Runtime
-worker = { version = "0.8.1", features = ["http"] }
+worker = { version = "0.8.3", features = ["http"] }
 worker-macros = { version = "0.8.1" }
 wasm-bindgen = "0.2.121"
 wasm-bindgen-futures = "0.4.71"
@@ -29,9 +29,9 @@ rustls-platform-verifier = "0.7.0"
 webpki-root-certs = "1.0.7"
 
 # Cryptography & HPKE (RFC 9180)
-hpke = { version = "0.12", default-features = false, features = ["p256", "alloc"] }
+hpke = { version = "0.13", default-features = false, features = ["p256", "alloc"] }
 rand_core = { version = "0.6", features = ["getrandom"] }
-libcrux-ml-kem = { version = "0.0.8", default-features = false, features = ["mlkem768", "alloc"] }
+libcrux-ml-kem = { version = "0.0.9", default-features = false, features = ["mlkem768", "alloc"] }
 rand = { version = "0.10.1", features = ["std"] }
 
 # HTTP Client
